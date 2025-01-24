@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
-from langchain.callbacks import get_openai_callback
-from langchain.chat_models import ChatOpenAI
+from langchain_community.callbacks import get_openai_callback
+from langchain_community.chat_models import ChatOpenAI
 from opencc import OpenCC
 import openai
 
