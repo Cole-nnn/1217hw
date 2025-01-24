@@ -23,7 +23,7 @@ def home():
 
 @app.route("/get_response", methods=["POST"])
 def get_response():
-    user_input = request.form.get('user_input')
+    user_input = request.get_json()["question"]
     if not user_input:
         return jsonify({'error': 'No user input provided'})
 
