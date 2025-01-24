@@ -16,21 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     };
 
-    const handleResponse = (data) => {
-        spinnerContainer.style.display = "none";
-        if (data.response) {
-            answerField.textContent = data.response;
-        } else {
-            answerField.textContent = "錯誤：" + (data.error || "未知錯誤");
-        }
-    };
-
-    const handleError = (error) => {
-        spinnerContainer.style.display = "none";
-        answerField.textContent = "請求失敗，請檢查網絡或後端服務。";
-        console.error("Error:", error);
-    };
-
     askButton.addEventListener("click", () => {
         const question = questionField.value.trim();
         if (!question) {
@@ -44,8 +29,15 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify({ question: question }),
         })
             .then((response) => response.json())
-            .then(handleResponse)
-            .catch(handleError);
+            .then((data) => {
+                spinnerContainer.style.display = "none";
+                answerField.textContent = data.response || "錯誤：" + data.error;
+            })
+            .catch((error) => {
+                spinnerContainer.style.display = "none";
+                answerField.textContent = "請求失敗，請檢查網絡或後端服務。";
+                console.error("Error:", error);
+            });
     });
 
     submitBtn.addEventListener("click", async () => {
@@ -53,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (userInput === "") return;
 
         createMessage(userInput, "User");
-        spinnerContainer.style.display = "flex";
         try {
             const response = await fetch("/get_response", {
                 method: "POST",
@@ -65,8 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             createMessage("請求失敗，請檢查網絡或後端服務。", "AI");
             console.error("Error:", error);
-        } finally {
-            spinnerContainer.style.display = "none";
         }
     });
 });
