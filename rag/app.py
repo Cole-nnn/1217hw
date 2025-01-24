@@ -11,7 +11,7 @@ import openai
 # 設定 OpenAI API 金鑰
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-app = Flask(__name__, template_folder='rag/templates', static_folder='rag/static')
+app = Flask(__name__)
 
 # 聊天歷史記錄
 chat_history = []
